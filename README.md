@@ -1,2 +1,1 @@
-# nyu-computational-dynamics
-Computational Dynamics course, MSQE program
+# Computational Dynamics course, NYU MSQE program
