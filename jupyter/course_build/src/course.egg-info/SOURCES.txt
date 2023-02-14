@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/course/__init__.py
+src/course/data.py
+src/course/defs.py
+src/course/plot.py
+src/course.egg-info/PKG-INFO
+src/course.egg-info/SOURCES.txt
+src/course.egg-info/dependency_links.txt
+src/course.egg-info/top_level.txt
