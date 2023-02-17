@@ -4,6 +4,7 @@ pyproject.toml
 src/course/__init__.py
 src/course/data.py
 src/course/defs.py
+src/course/kalman_filter.py
 src/course/plot.py
 src/course.egg-info/PKG-INFO
 src/course.egg-info/SOURCES.txt
