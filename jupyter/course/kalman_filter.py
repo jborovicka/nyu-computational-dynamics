@@ -141,6 +141,9 @@ class KalmanFilter:
         self.Ks = []
         self.obs = []
         self.resids = []
+        self.Σ = np.atleast_2d(self.Σ_prior)
+        self.X = np.atleast_2d(self.X_prior)
+        self.a = 0
         self.Xs.append(self.X_prior)
         self.Σs.append(self.Σ_prior)
         self.K = np.atleast_2d(1)
