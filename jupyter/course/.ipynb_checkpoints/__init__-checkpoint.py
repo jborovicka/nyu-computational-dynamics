@@ -5,13 +5,13 @@
 # import indirectly, call as course.defs_course.function_name
 # import course.defs_course
 
-from course.defs import *
 from course.data import *
-from course.plot import *
+from course.defs import *
 from course.kalman_filter import *
+from course.plot import *
 
-#import course.defs_course_1
+# import course.defs_course_1
 # from . import defs_course_2
-#import course.defs_course_2 as defs_course_2
-#from course.defs_course_3 import *
-print('Done everything.')
+# import course.defs_course_2 as defs_course_2
+# from course.defs_course_3 import *
+print("Done everything.")
