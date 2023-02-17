@@ -61,16 +61,14 @@ class KalmanFilter:
         # Start with \hat{X}, \hat{\Sigma} from previous period (prior)
         self.y = np.atleast_2d(y)
         # Form prediction error on what we predict given prior vs. observed
-        a = self.y - self.G @ self.X
-        self.a = copy.deepcopy(a)
+        self.a = self.y - self.G @ self.X
         self.obs.append(self.y)
         # We compute the Kalman gain parameter (regression coefficient)
-        K = self.A @ self.Σ @ self.G.T @ inv(self.G @ self.Σ @ self.G.T + self.R)
+        self.K = self.A @ self.Σ @ self.G.T @ inv(self.G @ self.Σ @ self.G.T + self.R)
         # Compute the residual of the observation compared to our prediction
         # Record the kalman gain and residuals
-        self.Ks.append(K)
-        self.K = copy.deepcopy(K)
-        self.resids.append(a)
+        self.Ks.append(self.K)
+        self.resids.append(self.a)
 
     def predict(self):
         """
@@ -79,16 +77,15 @@ class KalmanFilter:
         # Now we update our estimate of the state vector and covariance matrix using laws of motion
         self.X_prime = self.A @ self.X + self.K * self.a
         # Variance associated with $\nu$ noise
-        F = self.A - self.K @ self.G
+        self.F = self.A - self.K @ self.G
         # Ricatti equation for updating estimated variance of the state vector
         self.Σ_prime = (
             self.F @ self.Σ @ self.F.T + self.C @ self.C.T + self.K @ self.R @ self.K.T
         )
         # Update the state vector and covariance matrix as new priors
         self.t += 1
-        self.F = copy.deepcopy(F)
-        self.X = copy.deepcopy(self.X_prime)
-        self.Σ = copy.deepcopy(self.Σ_prime)
+        self.X = self.X_prime
+        self.Σ = self.Σ_prime
 
     def record(self):
         """
