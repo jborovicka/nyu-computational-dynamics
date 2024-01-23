@@ -1,4 +1,6 @@
-# NYU Intermediate Macroeconomics ECON-UA 12
+# Computational Dynamics course
+
+## NYU MSQE program
 
 Python notebooks that reproduce data and code used in the class. Files with Python code in the form of Jupyter notebooks for individual topics are stored in the <a href="jupyter">jupyter</a> folder above.
 
