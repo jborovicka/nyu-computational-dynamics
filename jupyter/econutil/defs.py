@@ -39,6 +39,113 @@ NBERRecessionDates = np.array([
   [2007.96,2009.46],
   [2020.13,2020.29]])
 
+myNBERRecessionQuarters = np.array([
+  [18573,18584],
+  [18604,18613],
+  [18652,18681],
+  [18693,18704],
+  [18734,18791],
+  [18822,18852],
+  [18873,18881],
+  [18904,18912],
+  [18932,18942],
+  [18961,18972],
+  [18994,19004],
+  [19031,19043],
+  [19073,19082],
+  [19102,19114],
+  [19132,19144],
+  [19184,19191],
+  [19202,19213],
+  [19233,19243],
+  [19264,19274],
+  [19294,19331],
+  [19373,19382],
+  [19452,19454],
+  [19491,19494],
+  [19533,19542],
+  [19574,19582],
+  [19603,19611],
+  [19701,19704],
+  [19741,19751],
+  [19802,19803],
+  [19814,19824],
+  [19904,19911],
+  [20012,20014],
+  [20081,20092],
+  [20201,20202]])
+
+myNBERRecessionMonths = np.array([
+  [185707,185812],
+  [186011,186106],
+  [186505,186712],
+  [186907,187012],
+  [187311,187903],
+  [188204,188505],
+  [188704,188804],
+  [189008,189105],
+  [189302,189406],
+  [189601,189706],
+  [189907,190012],
+  [190210,190408],
+  [190706,190806],
+  [191002,191201],
+  [191302,191412],
+  [191809,191903],
+  [192002,192107],
+  [192306,192407],
+  [192611,192711],
+  [192909,193303],
+  [193706,193806],
+  [194503,194510],
+  [194812,194910],
+  [195308,195405],
+  [195709,195804],
+  [196005,196102],
+  [197001,197011],
+  [197312,197503],
+  [198002,198007],
+  [198108,198211],
+  [199008,199103],
+  [200104,200111],
+  [200801,200906],
+  [202003,202004]])
+
+# create recession dummies using myNBERRecessionMonths and myNBERRecessionQuarters
+# for quarters, use interval = [YYYYQ begin, YYYYQ end]
+# for months, use interval = [YYYYMM begin, YYYYMM end]
+def CreateRecessionDummies(interval):
+    
+    if interval[0]>99999:
+        # months
+        divisor,periods = 100,12
+        recessions = np.append(myNBERRecessionMonths,[[999999,999999]],axis=0)
+    else:
+        # quarters
+        divisor,periods = 10,4
+        recessions = np.append(myNBERRecessionQuarters,[[999999,999999]],axis=0)
+    
+    T = periods*(interval[1]//divisor - interval[0]//divisor) + interval[1]%divisor - interval[0]%divisor + 1
+    period_ids = np.zeros(T,dtype=np.int32)
+    dummies = np.zeros(T,dtype=np.int32)
+    indices = np.where(recessions[:,1] >= interval[0])
+    ind = indices[0][0]
+    y,q = interval[0]//divisor, interval[0]%divisor
+    t = 0
+    while t < T:
+        period_ids[t] = y*divisor+q
+        if recessions[ind,0] <= y*divisor+q:
+            dummies[t] = 1
+        q += 1
+        if q==periods+1:
+            q = 1
+            y += 1
+        if recessions[ind,1] < y*divisor+q:
+            ind += 1
+        t += 1
+
+    return period_ids, dummies 
+
 # ==============================================================================
 # color definitions as in Paul Tol's set
 # https://personal.sron.nl/~pault/
