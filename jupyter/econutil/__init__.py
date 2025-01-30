@@ -1,11 +1,11 @@
 
 
 # read version from installed package
-import imp
+import importlib
 try:
-    imp.find_module('econutil')
-    from importlib.metadata import version
-    __version__ = version("econutil")
+    importlib.import_module('econutil')
+    # from importlib.metadata import version
+    __version__ = importlib.metadata.version("econutil")
 except ImportError:
     __version__ = "n/a - local"
 
