@@ -108,7 +108,7 @@ def OECDReaderSeriesCSV(sdmx_query):
     return pd.read_csv(response)
 
 # ------------------------------------------------------------------------------
-# an updated version of the OECDReader, up to date 2024
+# an updated version of the OECDReader, up to date 2025
 # download via CSV
 # API definition: https://gitlab.algobank.oecd.org/public-documentation/dotstat-migration/-/raw/main/OECD_Data_API_documentation.pdf
 # SDMX API version 1
@@ -127,6 +127,15 @@ def OECDReaderSeriesCSV(sdmx_query):
 #   dimensionAtObservation = The dimension at which the observation is made., e.g., 'TIME_PERIOD' / 'AllDimensions'
 #   format = The format of the data to be returned., e.g., 'csvfile' / 'csvfilewithlabels' (the latter includes the dimension verbose labels, not just identifiers)
 
+# an alternative approach can use the requests library instead of urrlib
+#    import requests
+#    headers = {
+#        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+#    }
+#    response = requests.get(url, headers=headers)
+#    response.raise_for_status()  # Raises an exception for bad status codes
+#    return response.content
+
 def OECDReaderSeriesCSV2(dataflow,filter,agency='OECD.SDD.NAD',version='1.0',startPeriod='',endPeriod='',dimensionAtObservation='AllDimensions',format='csvfile'):
     if startPeriod == '':
         startPeriodtext = ""
@@ -137,10 +146,17 @@ def OECDReaderSeriesCSV2(dataflow,filter,agency='OECD.SDD.NAD',version='1.0',sta
     else:
         endPeriodtext = f"&endPeriod={endPeriod}"
 
+    # create URL
     url = f"https://sdmx.oecd.org/public/rest/data/{agency},{dataflow},{version}/{filter}?dimensionAtObservation={dimensionAtObservation}{startPeriodtext}{endPeriodtext}&format={format}"
+    # create headers pretending to be a browser
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    }  
+    req = urllib.request.Request(url, headers=headers)
+    # deal with potential SSL certificate verification issues
     ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     ctx.options |= 0x4
-
-    response = urllib.request.urlopen(url, context=ctx)
+    # download data
+    response = urllib.request.urlopen(req, context=ctx)
 
     return pd.read_csv(response)

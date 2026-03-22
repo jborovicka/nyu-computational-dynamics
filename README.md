@@ -2,7 +2,7 @@
 
 This site contains Python notebooks and Matlab codes for the Computational Dynamics course in the <a href="https://as.nyu.edu/departments/econ/graduate/ms.html">Master's Program in Quantitative Economics</a> at NYU. 
 
-Files with Python code in the form of Jupyter notebooks for individual topics are stored in the <a href="jupyter/">jupyter</a> folder above. Matlab codes are stored in the <a href="matlab/">matlab</a> folder.
+Files with Python code in the form of Jupyter notebooks for individual topics are stored in the <a href="jupyter/">jupyter</a> folder above.
 
 You can view the Jupyter notebooks with existing output directly in the folder. If you want to edit and run the code, you can download the whole folder by clicking the green <tt>Code</tt> button above on the right, and then choosing <tt>Download ZIP</tt>. If you have your own Python installation (for example, <a href="https://www.anaconda.com/">Anaconda</a>), then you can run the code on your machine, or utilize a Python server you have access to.
 
